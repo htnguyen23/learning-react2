@@ -1,30 +1,37 @@
 import '../App.css';
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
+import ListGroup from 'react-bootstrap/ListGroup';
 
-class AppButton extends React.Component {
+export default function AppButton() {
+    
+    // CHANGE: define itemList Component to handle items in state and specific functionality
+    
+    const [items, setItems] = useState([])
 
-    addEvent = () => {
-        var itemList = document.getElementById("itemList") 
-        if (itemList.style.visibility === "hidden") {
-            itemList.style.visibility = "visible";
-        } else {
-            itemList.style.visibility = "hidden";
+    // Function to add an item to the list 
+    const addEvent = () => {
+        const newItem = prompt("Enter a new item: ");
+        if (newItem) {
+            setItems([...items, newItem]);
         }
+    };
 
-    }
+    // use effect hook to fetch data and update for list
+    // useEffect(() => {
+    //     // display/add item to list
+        
+    // }, [items])
 
-    render() {
-        return (
-            <div>
-                <button className="App-button" onClick={this.addEvent}> 
-                    Share 
-                    </button>
-                <ol id="itemList">
-                    <li>itemList</li>
-                    </ol>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <button className="App-button" onClick={addEvent}> 
+                Share 
+                </button>
+            <ListGroup>
+                {items.map((item, i) => (
+                    <ListGroup.Item key={i}> {item} </ListGroup.Item>
+                ))}
+                </ListGroup>
+        </div>
+    );
 };
-
-export default AppButton;
