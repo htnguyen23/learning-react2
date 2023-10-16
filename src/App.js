@@ -1,11 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
+import AppButton from './Components/AppButton';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button className="App-button"> Share </button>
+        <AppButton></AppButton>
       </header>
     </div>
   );
