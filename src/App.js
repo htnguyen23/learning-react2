@@ -1,11 +1,13 @@
 import './App.css';
-import AppButton from './Components/AppButton';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import AppList from './Components/AppList';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <AppButton></AppButton>
+        <AppList></AppList>
       </header>
     </div>
   );
