@@ -8,7 +8,7 @@ import { Dialog, Classes } from '@blueprintjs/core';
 
 let expensesArr = []   // CHANGE: use an array or a state hook?
 
-export default function AppList() {
+export default function AppList( {onAddExpense, expenses} ) {
     
     // CHANGE: define itemList Component to handle items in state and specific functionality
     const [items, setItems] = useState([])
@@ -16,27 +16,26 @@ export default function AppList() {
     // TODO: separate these into their components - how to access state hooks of another component?
     const [showForm, setShowForm] = useState(false)
     const [expense, setExpense] = useState({ description: '', amount: ''})
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setExpense({...expense, [name.trim()]: value.trim(),});
+        setExpense({...expense, [name]: value});
     }; 
     const handleSubmit = (e) => {
+        console.log("in child onAddExpense")
         e.preventDefault();
         console.log('form submitted: ', expense)
-        if (expense.description && expense.amount) {
-            expensesArr.push([expense.description, expense.amount]);   
+        console.log('type of expense: ', typeof expense.amount)
+        if (expense.description.trim() && expense.amount) {
+            onAddExpense(expense);   
         };
-        let empty = ''
-        if (empty) {
-            console.log("empty string evaluates to true")
-        }
-        console.log("itemsArr:\n" + expensesArr)
+        //console.log("expenses:\n" + expenses)
         setExpense({ description: '', amount: '' })
         setShowForm(false)
     };
 
     const addEvent = () => {
-        console.log("showForm: " + showForm)
+        //console.log("showForm: " + showForm)
         setShowForm(true)
     };
 
@@ -53,7 +52,7 @@ export default function AppList() {
     return (
         <div>
             <button className="App-button" onClick={addEvent}> 
-                Add 
+                Add Expense 
             </button>
             <div style={{ display: 'block', width: 400, padding: 30 }}>
                 <Dialog 
@@ -84,8 +83,8 @@ export default function AppList() {
                 </Dialog> 
             </div>
             <ul className="list-group">
-                {expensesArr.map((item, i) => (
-                    <li key={i} className="list-group-item list-group-item-action" onClick={() => alertClicked(item)}> {item[0]} : ${item[1]} </li>
+                {expenses.map((item, i) => (
+                    <li key={i} className="list-group-item list-group-item-action" onClick={() => alertClicked(item)}> {item.description} : ${item.amount} </li>
                 ))}
                 </ul>
         </div>

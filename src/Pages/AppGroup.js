@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { TextArea, FormGroup, InputGroup } from "@blueprintjs/core";
 
-export default function AppGroup( {handlePushArg} ) {
+export default function AppGroup( {onAddPerson} ) {
 
-    const[testPush, setTestPush] = useState("")
+    const[person, setPerson] = useState("")
+    const[showForm, setShowForm] = useState(false)
 
-    const handlePush = () => {
-        handlePushArg(testPush);
-        setTestPush("")
+    const onAddPersonChild = () => {
+        console.log("in child onAddPerson")
+        person.trim() && onAddPerson(person.trim());
+        setPerson("")
     }
 
     return (
         <div>
-            <button className="App-button" type="button" onClick={handlePush}> push </button>
+            <button className="App-button" type="button" onClick={onAddPersonChild}> Add Person </button>
             <FormGroup
                 label="Add person"
                 labelFor="text-input" >
-                <InputGroup id="text-input" placeholder="Huong" value={testPush} onChange={(e) => setTestPush(e.target.value)}/>
+                <InputGroup id="text-input" placeholder="Who is paying?" value={person} onChange={(e) => setPerson(e.target.value)}/>
             </FormGroup>
         </div>
     );
