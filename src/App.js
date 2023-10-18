@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import AppList from './Components/AppList';
+import AppList from './Pages/AppList';
 
 function App() {
   return (

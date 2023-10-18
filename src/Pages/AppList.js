@@ -4,39 +4,44 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup'
-import AddForm from './AddForm';
 import { Dialog, Classes } from '@blueprintjs/core';
-import ButtonWithDialog from './ButtonWithDialog';
+
+let expensesArr = []   // CHANGE: use an array or a state hook?
+let peopleArr = []
 
 export default function AppList() {
     
     // CHANGE: define itemList Component to handle items in state and specific functionality
-    let itemsArr = []   // CHANGE: use an array or a state hook?
     const [items, setItems] = useState([])
-    
+
     // TODO: separate these into their components - how to access state hooks of another component?
     const [showForm, setShowForm] = useState(false)
-    const [expense, setExpense] = useState({ description: '', amount: ''
-    })
+    const [expense, setExpense] = useState({ description: '', amount: ''})
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setExpense({...expense, [name]: value,});
+        setExpense({...expense, [name.trim()]: value.trim(),});
     }; 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('form submitted: ', expense)
-        itemsArr.push(expense)
-        console.log("itemsArr:\n" + itemsArr)
-        console.log("itemsArr size: " + itemsArr.length)
+        if (expense.description && expense.amount) {
+            expensesArr.push([expense.description, expense.amount]);   
+        };
+        let empty = ''
+        if (empty) {
+            console.log("empty string evaluates to true")
+        }
+        console.log("itemsArr:\n" + expensesArr)
+        setExpense({ description: '', amount: '' })
         setShowForm(false)
     };
 
     const addEvent = () => {
+        console.log("showForm: " + showForm)
         setShowForm(true)
     };
 
     const alertClicked = (itemClicked) => {
-        //alert(itemClicked + " clicked");
         console.log(itemClicked + " clicked")
     };
     
@@ -50,7 +55,8 @@ export default function AppList() {
         <div>
             <button className="App-button" onClick={addEvent}> 
                 Add 
-                </button>
+            </button>
+            <div style={{ display: 'block', width: 400, padding: 30 }}>
                 <Dialog 
                     title="Add an Expense"
                     isOpen={showForm} 
@@ -75,12 +81,12 @@ export default function AppList() {
                     <div className={Classes.DIALOG_BODY}>
                         <button type="submit">Split it</button>
                     </div>
-                        
                     </form>
                 </Dialog> 
+            </div>
             <ul className="list-group">
-                {itemsArr.map((item, i) => (
-                    <li key={i} className="list-group-item list-group-item-action" onClick={() => alertClicked(item)}> {i+1} : {item} </li>
+                {expensesArr.map((item, i) => (
+                    <li key={i} className="list-group-item list-group-item-action" onClick={() => alertClicked(item)}> {item[0]} : ${item[1]} </li>
                 ))}
                 </ul>
         </div>
