@@ -7,6 +7,7 @@ import CardGroup from 'react-bootstrap/CardGroup'
 import { Dialog, Classes } from '@blueprintjs/core';
 
 let expensesArr = []   // CHANGE: use an array or a state hook?
+let peopleArr = []
 
 export default function AppList() {
     
@@ -91,3 +92,23 @@ export default function AppList() {
         </div>
     );
 };
+
+            // <ListGroup>
+            //     {items.map((item, i) => (
+            //         <ListGroupItem key={i} action onClick={alertClicked(item)}> 
+            //             {i+1} : {item} 
+            //             </ListGroupItem>
+            //     ))}
+            //     <ListGroupItem action onClick={alertClicked("nonMap")}> nonMapItem </ListGroupItem>
+            //     </ListGroup>
+
+            // <CardGroup>
+            // {items.map((item, i) => (
+            //     <Card key={i} action onClick={() => alertClicked(item)}> 
+            //         <Card.Body>
+            //             <Card.Title> {i} </Card.Title>
+            //             <Card.Text> {item} </Card.Text>
+            //             </Card.Body>
+            //         </Card>
+            // ))}
+            // </CardGroup>
