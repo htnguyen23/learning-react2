@@ -21,8 +21,7 @@ function App() {
 
   const onAddExpense = (toAdd) => {
     console.log("in parent onAddExpense")
-    setExpenses([...expenses, {description: toAdd.description.trim(), amount: toAdd.amount}])
-    //expenses.length && console.log("expenses:\n" + expenses[0].description + expenses[0].amount)
+    setExpenses([...expenses, {descrip: toAdd.descrip, amount: toAdd.amount}])
   }
 
   return (
@@ -33,11 +32,11 @@ function App() {
         </ul>
 
         <AppGroup onAddPerson={onAddPerson} ></AppGroup>
-        <AppList onAddExpense={onAddExpense} expenses={expenses}></AppList>
+        <AppList onAddExpense={onAddExpense} people={people} expenses={expenses}></AppList>
 
         <ul className="list-group">
           {expenses.map((item, i) => (
-            <li key={i} className="list-group-item list-group-item-action" > {item.description} : ${item.amount} </li>
+            <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
           ))}
         </ul>
     </div>
