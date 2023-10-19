@@ -27,16 +27,22 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
         <ul className="list-group">
           {people.map((elem, i) => (
           <li key={i} className="list-group-item list-group-item-action"> {elem} </li> ))}
         </ul>
+
         <AppGroup onAddPerson={onAddPerson} ></AppGroup>
         <AppList onAddExpense={onAddExpense} expenses={expenses}></AppList>
-      </header>
+
+        <ul className="list-group">
+          {expenses.map((item, i) => (
+            <li key={i} className="list-group-item list-group-item-action" > {item.description} : ${item.amount} </li>
+          ))}
+        </ul>
     </div>
   );
+
 }
 
 export default App;

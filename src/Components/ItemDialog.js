@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import {
-    AnchorButton,
-    Button,
-    Code,
-    Dialog,
-    Classes,
-    DialogBody,
-    DialogFooter,
-    DialogProps,
-    H5,
-    Switch,
-    Tooltip,
-   } from "@blueprintjs/core";
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '@blueprintjs/core/lib/css/blueprint.css'; 
+import React, { useState, useEffect } from 'react'
+import { H3, Dialog, Classes, Button, Overlay, FormGroup, InputGroup} from '@blueprintjs/core';
 
-export default function ItemDialog( {isOpen} ) {
+  // data structure for all people in group to split expenses with - can a data structure be put into the function App() to behave like a global var for the components?
+  let peopleArr = []
 
-    // How to create an attribute/prop for <ButtonWithDialog> that similar to isOpen for <Dialog>?
+export default function ItemDialog() {
+    // Open state 
+    const [showForm, setShowForm] = useState(false) 
 
-    let input = {}
-    const [open, setOpen] = useState(isOpen)
+    let input = { description: 'test', amount: '0' }
     const [expense, setExpense] = useState({ description: '', amount: '' })
-
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,18 +21,24 @@ export default function ItemDialog( {isOpen} ) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        setOpen(false)
-        //setExpense({ description: '', amount: '' })
+        setShowForm(false)
+        input = { description: expense.description.trim(), amount: expense.amount }
+        peopleArr.push(input)
+        setExpense({ description: '', amount: '' })
+    }
+
+    const handleButton = () => {
+        setShowForm(true)
+        console.log("handleButton")
     }
 
     return ( 
-        <div style={{ 
-            display: 'block', width: 400, padding: 30 
-        }}> 
+        <div style={{ display: 'block', width: 400, padding: 30 }}> 
+            <Button text="Add expense" onClick={handleButton} ></Button>
             <Dialog 
                 title="Add an Expense"
-                isOpen={open} 
-                onClose={() => setOpen(false)} > 
+                isOpen={showForm} 
+                onClose={() => setShowForm(false)} > 
                 <form onSubmit={handleSubmit}>
                 <div className={Classes.DIALOG_BODY}>
                     <label>Description: </label>
@@ -64,7 +61,8 @@ export default function ItemDialog( {isOpen} ) {
                 </div>
                     
                 </form>
-            </Dialog> 
-        </div> 
+            </Dialog>
+            <p> {input.description} : $ {input.amount} </p>
+        </div > 
     ); 
-} 
+    }

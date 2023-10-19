@@ -39,16 +39,6 @@ export default function AppList( {onAddExpense, expenses} ) {
         setShowForm(true)
     };
 
-    const alertClicked = (itemClicked) => {
-        console.log(itemClicked + " clicked")
-    };
-    
-    // TODO: use effect hook to fetch data and update for list
-    // useEffect(() => {
-    //     // display/add item to list
-        
-    // }, [items])
-
     return (
         <div>
             <button className="App-button" onClick={addEvent}> 
@@ -82,11 +72,6 @@ export default function AppList( {onAddExpense, expenses} ) {
                     </form>
                 </Dialog> 
             </div>
-            <ul className="list-group">
-                {expenses.map((item, i) => (
-                    <li key={i} className="list-group-item list-group-item-action" onClick={() => alertClicked(item)}> {item.description} : ${item.amount} </li>
-                ))}
-                </ul>
         </div>
     );
 };
