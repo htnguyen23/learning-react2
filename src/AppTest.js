@@ -2,17 +2,23 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@blueprintjs/core/lib/css/blueprint.css'; 
 import React, { useState, useEffect } from 'react'
-import { H3, Dialog, Classes, Button, Overlay, FormGroup, InputGroup} from '@blueprintjs/core';
+import { H3, Dialog, Classes, Button, Overlay, FormGroup, InputGroup, RadioGroup, Radio} from '@blueprintjs/core';
 
   // data structure for all people in group to split expenses with - can a data structure be put into the function App() to behave like a global var for the components?
-  let peopleArr = []
+  let peopleArr = ["Huong", "Mom", "Dad"]
 
-export default function ItemDialog() {
-    // Open state 
+function AppTest() {
+    const [expenses, setExpenses] = useState([])
+    const [expense, setExpense] = useState({ descrip: '', amount: '' })
     const [showForm, setShowForm] = useState(false) 
+    let input = { descrip: 'test', amount: '0' }
 
-    let input = { description: 'test', amount: '0' }
-    const [expense, setExpense] = useState({ description: '', amount: '' })
+    // new
+    const [payer, setPayer] = useState(peopleArr[0])
+
+    const handlePayer = (e) => {
+        setPayer(e.target.value)
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -22,9 +28,11 @@ export default function ItemDialog() {
     function handleSubmit(e) {
         e.preventDefault()
         setShowForm(false)
-        input = { description: expense.description.trim(), amount: expense.amount }
-        peopleArr.push(input)
-        setExpense({ description: '', amount: '' })
+        //input = { description: expense.description.trim(), amount: expense.amount }
+        //peopleArr.push(input)
+        setExpenses([...expenses, {descrip: expense.descrip.trim(), amount: expense.amount}])
+        setExpense({ descrip: '', amount: '' })
+        console.log("payer: " + payer)
     }
 
     const handleButton = () => {
@@ -44,8 +52,8 @@ export default function ItemDialog() {
                     <label>Description: </label>
                     <input
                         type="text"
-                        name="description"
-                        value={expense.description}
+                        name="descrip"
+                        value={expense.descrip}
                         onChange={handleInputChange} />
                 </div>
                 <div className={Classes.DIALOG_BODY}>
@@ -56,13 +64,34 @@ export default function ItemDialog() {
                         value={expense.amount}
                         onChange={handleInputChange} />
                 </div>
+                { (expense.descripn && expense.amount) && (
+                    <div className={Classes.DIALOG_BODY}>
+                        <RadioGroup
+                            name="group"
+                            label="Who paid?"
+                            selectedValue={payer}
+                            onChange={(e) => setPayer(e.target.value)} >
+                            {peopleArr.map((item, i) => (
+                                <Radio key={i} value={item} label={item}> </Radio>
+                            ))}
+                        </RadioGroup>
+                    </div>
+                )}
+
                 <div className={Classes.DIALOG_BODY}>
                     <button type="submit">Split it</button>
                 </div>
                     
                 </form>
             </Dialog>
-            <p> {input.description} : $ {input.amount} </p>
+            <ul className="list-group">
+                {expenses.map((item, i) => (
+                    <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
+                ))}
+            </ul>
+
         </div > 
     ); 
     }
+
+export default AppTest;

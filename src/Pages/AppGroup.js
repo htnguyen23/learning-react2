@@ -7,7 +7,7 @@ export default function AppGroup( {onAddPerson} ) {
     const[showForm, setShowForm] = useState(false)
 
     const onAddPersonChild = () => {
-        console.log("in child onAddPerson")
+        //console.log("in child onAddPerson")
         if (!showForm) {
             setShowForm(true)
         } else {

@@ -1,6 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AppList from './Pages/AppList';
+import AppExpenses from './Pages/AppExpenses';
 import AppGroup from './Pages/AppGroup';
 import React, { useState, useEffect } from 'react'
 import { Dialog, Classes } from '@blueprintjs/core';
@@ -11,16 +11,16 @@ import { Dialog, Classes } from '@blueprintjs/core';
 function App() {
   //console.log("here");
   const [, setRenderTrigger] = useState({})  //State for triggering re-renders - can useEffect() be used here w/ a dependency array?
-  const [people, setPeople] = useState([])
+  const [people, setPeople] = useState([{name: "jack", cost: []}, {name: "huong", cost: []}])   // {name: personName, cost: [array of amounts they owe $]}
   const [expenses, setExpenses] = useState([])
 
   const onAddPerson = (toAdd) => {
-    console.log("in parent onAddPerson")
-    setPeople([...people, toAdd])
+    console.log(toAdd)
+    setPeople([...people, {name: toAdd, cost: []}])
   }
 
   const onAddExpense = (toAdd) => {
-    console.log("in parent onAddExpense")
+    //console.log("in parent onAddExpense")
     setExpenses([...expenses, {descrip: toAdd.descrip, amount: toAdd.amount}])
   }
 
@@ -28,11 +28,11 @@ function App() {
     <div className="App">
         <ul className="list-group">
           {people.map((elem, i) => (
-          <li key={i} className="list-group-item list-group-item-action"> {elem} </li> ))}
+          <li key={i} className="list-group-item list-group-item-action"> {elem.name} </li> ))}
         </ul>
 
         <AppGroup onAddPerson={onAddPerson} ></AppGroup>
-        <AppList onAddExpense={onAddExpense} people={people} expenses={expenses}></AppList>
+        <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses}></AppExpenses>
 
         <ul className="list-group">
           {expenses.map((item, i) => (
