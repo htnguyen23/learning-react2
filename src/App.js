@@ -8,10 +8,12 @@ import { Dialog, Classes } from '@blueprintjs/core';
   // data structure for all people in group to split expenses with - can a data structure be put into the function App() to behave like a global var for the components?
   let peopleArr = []
 
+  // TODO: use <Tabs> for page nagivation
+
 function App() {
   //console.log("here");
   const [, setRenderTrigger] = useState({})  //State for triggering re-renders - can useEffect() be used here w/ a dependency array?
-  const [people, setPeople] = useState([{name: "jack", cost: []}, {name: "huong", cost: []}])   // {name: personName, cost: [array of amounts they owe $]}
+  const [people, setPeople] = useState([{name: "jack", cost: [0]}, {name: "huong", cost: [0]}])   // {name: personName, cost: [array of amounts they owe $]}
   const [expenses, setExpenses] = useState([])
 
   const onAddPerson = (toAdd) => {

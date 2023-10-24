@@ -27,8 +27,8 @@ export default function SplitOptions(props) {
     const [showPayers, setShowPayers] = useState(false)
     const [personPaid, setPersonPaid] = useState(props.people[0].name)
     const [showSplit, setShowSplit] = useState(false)
-    const [unequal, setUnequal] = useState("equally")
-    const equality = {"equal": 1, "not equal": 0}
+    const [equality, setEquality] = useState("equally")
+    const [showUnequal, setShowUnequal] = useState(false)
 
     const showPayersButton = () => {
         setShowPayers(!showPayers)
@@ -42,10 +42,29 @@ export default function SplitOptions(props) {
         setShowSplit(!showSplit)
     }
 
-    const showUnequalSplit = (eUnequal) => {
-        setUnequal(eUnequal)
+    const unequalButton = () => {
+        setEquality("not equally ")
+        props.setEqual(false)
+    }
+    
+    const equalButton = () => {
+        setEquality("equally")
+        props.setEqual(true)
     }
 
+    const splitEqually = () => {
+        // Handle math for equal payment
+        let eachCost = props.expense.amount / props.people.length
+        let payerChangeChild = []
+        props.people.forEach((elem, index) => {
+            payerChangeChild.push({name: elem.name, cost: eachCost})
+            // console.log("pushing for : " + elem.name)
+            // console.log("in payerChangeChild: " + payerChangeChild[index])
+        })
+        //console.log("in equalButton in SplitOptions.js")
+        props.setPayerChangeChild(payerChangeChild)
+    }
+    //console.log("testing no function: " + equality)
 
     return ( 
         <div > 
@@ -62,11 +81,11 @@ export default function SplitOptions(props) {
 
                 <strong>  Split by everyone </strong>
                 <Button onClick={showSplitButton}>
-                    {(!showSplit && unequal)}
+                    {(!showSplit && equality)}
                     <Collapse isOpen={showSplit}>
-                        <Button onClick={(e) => showUnequalSplit("equally")} > equally </Button>
-                        <Button onClick={(e) => showUnequalSplit("not equally")} > not equally </Button>
-                        <Drawer isOpen={(unequal=='not equally')}>UNEQUAL OPTION</Drawer>
+                        <Button onClick={equalButton} > equally </Button>
+                        <Button onClick={unequalButton} > not equally </Button>
+                        <Drawer isOpen={showUnequal} title="someone's paying more..." isCloseButtonShown={true} onClose={equalButton}> UNEQUAL OPTION </Drawer>
                     </Collapse>
                 </Button>
                 
@@ -74,30 +93,4 @@ export default function SplitOptions(props) {
         </div > 
     ); 
     }
-
-
-            // <Row className="mb-3">
-            //     <Form.Group as={Col} controlId="payers">
-            //         <RadioGroup
-            //             name="group1"
-            //             label="Who paid?"
-            //             selectedValue={payer}
-            //             onChange={handlePayer} >
-            //             {props.people.map((item, i) => (
-            //                 <Radio key={i} value={item.name} label={item.name}> </Radio>
-            //             ))}
-            //         </RadioGroup>
-            //     </Form.Group>
-            // </Row>
-
-// <Form.Group as={Col} controlId="payersSplit">
-//     <RadioGroup
-//         name="group2"
-//         label="How is it being split?"
-//         selectedValue={equalSplit}
-//         onChange={handleSplit} >
-//             <Radio key={"splitChoice1"} value={0} label={"Equally"}> </Radio>
-//             <Radio key={"splitChoice2"} value={1} label={"Someone is paying more"}> </Radio>
-//     </RadioGroup>
-// </Form.Group>
 
