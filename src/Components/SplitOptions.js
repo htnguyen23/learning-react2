@@ -18,14 +18,14 @@ export default function SplitOptions(props) {
         // Handle math for equal payment
         let cost = props.expense.amount / props.people.length
         props.people.forEach((elem, index) => {
-            props.payerChange.push({name: props.people.name, cost: [cost]})
+            props.payerChange.push({name: props.people, cost: [cost]})
         })
 
         // Handle math for unequal payment
     }; 
 
     const [showPayers, setShowPayers] = useState(false)
-    const [personPaid, setPersonPaid] = useState(props.people[0].name)
+    const [personPaidChild, setPersonPaidChild] = useState(props.people[0])
     const [showSplit, setShowSplit] = useState(false)
     const [equality, setEquality] = useState("equally")
     const [showUnequal, setShowUnequal] = useState(false)
@@ -35,7 +35,8 @@ export default function SplitOptions(props) {
     }
 
     const payerClicked = (eName) => {
-        setPersonPaid(eName)
+        setPersonPaidChild(eName)
+        props.setPersonPaid(eName)
     }
 
     const showSplitButton = () => {
@@ -43,7 +44,7 @@ export default function SplitOptions(props) {
     }
 
     const unequalButton = () => {
-        setEquality("not equally ")
+        setEquality("not equally ") 
         props.setEqual(false)
     }
     
@@ -57,8 +58,7 @@ export default function SplitOptions(props) {
         let eachCost = props.expense.amount / props.people.length
         let payerChangeChild = []
         props.people.forEach((elem, index) => {
-            payerChangeChild.push({name: elem.name, cost: eachCost})
-            // console.log("pushing for : " + elem.name)
+            payerChangeChild.push({name: elem, cost: eachCost})
             // console.log("in payerChangeChild: " + payerChangeChild[index])
         })
         //console.log("in equalButton in SplitOptions.js")
@@ -71,10 +71,10 @@ export default function SplitOptions(props) {
             <div>
                 <strong>  Paid by  </strong>
                 <Button onClick={showPayersButton}>
-                    {(!showPayers && personPaid)}
+                    {(!showPayers && personPaidChild)}
                     <Collapse isOpen={showPayers}>
                         {props.people.map((item, i) => (
-                            <Button key={i} onClick={(eName) => payerClicked(item.name)} > {item.name} </Button>
+                            <Button key={i} onClick={(eName) => payerClicked(item)} > {item} </Button>
                         ))}
                     </Collapse>
                 </Button>

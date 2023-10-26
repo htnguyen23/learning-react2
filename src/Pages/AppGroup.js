@@ -3,6 +3,8 @@ import { TextArea, FormGroup, InputGroup } from "@blueprintjs/core";
 
 export default function AppGroup( {onAddPerson} ) {
 
+    // TODO: can't add people when there are existing expenses and/or can add people but existing expenses won't include them
+
     const[person, setPerson] = useState("")
     const[showForm, setShowForm] = useState(false)
 
