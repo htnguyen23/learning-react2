@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 import { H3, Dialog, Classes, Overlay, FormGroup, InputGroup, RadioGroup, Radio} from '@blueprintjs/core';
 
 let expensesArr = []   // CHANGE: use an array or a state hook?
-const paymentsMap = new Map();
+//const paymentsMap = new Map();
 /**
  * payerChangeMap map
  * { name: [ cost map w/ every other person's name as keys and values of what this person owes them ]
@@ -28,21 +28,26 @@ const paymentsMap = new Map();
  *  payers: people with whom this expense is being split
  * }
  * 
- * payerChange array
- * [ {name: name of payer
- *    cost: [array of floats (+/-) for the amount for an expense that person paid] },
- *   {next person...}
- * ]
+ * payerChange object
+ * {giving: name of person making the payment (payer)
+ *  receiving: name of person getting the payment (payee - ie. the personPaid)
+ *  cost: the amount of money in the payment
+ *  }
  */
 
-export default function AppExpenses( {onAddExpense, people, expenses, peopleArr} ) {
-    
+export default function AppExpenses( props ) {
+
     const [showForm, setShowForm] = useState(false)
     const [expense, setExpense] = useState({ descrip: '', amount: ''})
-    const [payerChange, setPayerChange] = useState([])  
     const [equal, setEqual] = useState(true)
-    const [personPaid, setPersonPaid] = useState([people[0]])
-
+    let [payerChange, setPayerChange] = useState({giving: "", recieving: "", cost: 0})  
+    //const [personPaid, setPersonPaid] = useState(props.people[0]); // problem
+    
+    // variable for person who is paying (used in calculating math for payments)
+    let personPaid = props.people[0]
+    const setPersonPaid = (person) => {
+        personPaid = person
+    }
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setExpense({...expense, [name]: value});
@@ -53,40 +58,44 @@ export default function AppExpenses( {onAddExpense, people, expenses, peopleArr}
         console.log('form submitted: ', expense)
         if (expense.descrip.trim() && expense.amount) {
             setExpense({ descrip: expense.descrip.trim() })
-            onAddExpense(expense);   
+            props.onAddExpense(expense);   
         };
         setExpense({ descrip: '', amount: '' })
-        console.log("equal = " + equal)
-        payerChangeMath()
+        if (equal) {
+            paymentMathEqual()
+        }
         setShowForm(false)
-        peopleArr.push("TEST")
-        //console.log("payerChange length = " + payerChange.length)
     };
 
+    
     // payerChange setter method to be passed to SplitOptions child component for it to return which payers paid what amount
-    const payerChangeMath = () => {
-        console.log("in payerChangeMath: ")     
+    const paymentMathEqual = () => {
+        console.log("in paymentMathEqual: ")     
+    
+        // Handle math for equal payment
+        let eachCost = parseFloat((expense.amount / props.people.length).toFixed(2))
         
-        if (equal) {
-            // Handle math for equal payment
-            let eachCost = parseFloat((expense.amount / people.length).toFixed(2))
-            let temp = []
-            //console.log(personPaid)
-            for (const elem of people) {
-                if (!paymentsMap.has(elem)) {
-                    paymentsMap.set(elem, []);
-                  }
-                if (elem == personPaid) {
-                    continue;
-                }
-                paymentsMap.get(elem).push(eachCost)
-            }
+        console.log("paymentsMap before:")
+        console.log(props.paymentsMap)
 
-            paymentsMap.forEach( (elem, i) => {
-                console.log("\tpayerChangeMap[" + i + "]")
-                console.log(elem)
-            })
+        for (const personPaying of props.paymentsMap.keys()) {
+            //paymentsMap.set("test", "test")
+            if (personPaying == personPaid) {
+                console.log("personPaying = " + personPaying + " personPaid = " + personPaid)
+                continue;
+            } 
+            console.log("personPaying = " + personPaying)
+            // console.log(paymentsMap.get(personPaying).keys())
+            for (const personOwed of (props.paymentsMap.get(personPaying)).keys()) {
+                if (personOwed == personPaid) {
+                    props.paymentsMap.get(personPaying).get(personOwed).push(eachCost)
+                    //console.log("\t\there")
+                }
+                //console.log("\titerated through: " + personPaying + " for " + personOwed)
+            }
         }
+        console.log("paymentsMap after:")
+        console.log(props.paymentsMap);
     }
 
     return (
@@ -124,8 +133,8 @@ export default function AppExpenses( {onAddExpense, people, expenses, peopleArr}
                                     </Form.Group>
                                 </div>
                             </Row>
-                            { (people.length > 0) && (expense.descrip && expense.amount) && (
-                                <SplitOptions setEqual={setEqual} expense={expense} people={people} setPersonPaid={setPersonPaid}/>
+                            { (props.people.length > 0) && (expense.descrip && expense.amount) && (
+                                <SplitOptions setEqual={setEqual} expense={expense} people={props.people} setPersonPaid={setPersonPaid}/>
                             )}
                             <div className={Classes.DIALOG_BODY}>
                                 <Button type="submit" onClick={handleSubmit} >Split it</Button>

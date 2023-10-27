@@ -8,6 +8,11 @@ export default function AppGroup( {onAddPerson} ) {
     const[person, setPerson] = useState("")
     const[showForm, setShowForm] = useState(false)
 
+    const handleKeyDown = (e) => {
+        if (e.key == 'Enter') {
+            onAddPersonChild()
+        }
+    }
     const onAddPersonChild = () => {
         //console.log("in child onAddPerson")
         if (!showForm) {
@@ -27,7 +32,13 @@ export default function AppGroup( {onAddPerson} ) {
                 <FormGroup
                     label="Add person"
                     labelFor="text-input" >
-                    <InputGroup id="text-input" placeholder="Who is paying?" value={person} onChange={(e) => setPerson(e.target.value)}/>
+                    <InputGroup 
+                        id="text-input" 
+                        onKeyDown={(e) => handleKeyDown(e)}
+                        placeholder="Who is paying?" 
+                        value={person} 
+                        onChange={(e) => setPerson(e.target.value)}
+                    />
                 </FormGroup> 
             )}
         </div>

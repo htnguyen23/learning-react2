@@ -6,9 +6,9 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function PaymentGrid(props) {
 
-    // console.log("in PaymentGrid()")
-    // console.log(props.paymentsMap)
-    // console.log(props.people)
+     //console.log("in PaymentGrid()")
+     //console.log(props.paymentsMap)
+     //console.log(props.people)
 
     // console.log("Card.Text:")
     // for (let i = 0; i < props.people.length; i += 1) {
@@ -18,29 +18,61 @@ export default function PaymentGrid(props) {
     //     })
     // }
 
+    const sumArray = (arr) => {
+        return arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    }
+    
     return (
-        <Row xs={1} md={2} className="g-4">
-        {Array.from({ length: props.people.length }).map((_, idx) => (
-            <Col key={idx}>
-            <Card>
-                <Card.Body>
-                    <Card.Title> {props.people[idx]} </Card.Title>
-                </Card.Body>
-                <ListGroup>
-                    {props.paymentsMap.get(props.people[idx]).forEach((value, key) => {
-                        <ListGroup.Item> {key} : you owe $ {value} </ListGroup.Item>
-                    })}
-                </ListGroup>
-            </Card>
-            </Col>
-        ))}
-        </Row>
+        <div>
+            <Row xs={1} md={2} className="g-4">
+            {Array.from({ length: props.people.length }).map((_, idx) => (
+                <Col key={idx}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title> {props.people[idx]} </Card.Title>
+                    </Card.Body>
+                    <ListGroup>
+                        {props.paymentsMap.get(props.people[idx]).forEach((value, key) => {
+                            <ListGroup.Item> {key} : you owe $ {sumArray(value)} </ListGroup.Item>
+                        })}
+                    </ListGroup>
+                </Card>
+                </Col>
+            ))}
+            </Row>
+            <div>
+                {
+                props.people.map((person) => (
+                    <dl key={person}>
+                    <dt>{person}</dt>
+                        {Array.from(props.paymentsMap.get(person)).map(([key, value]) => (
+                            <dd key={key} >
+                            you owe {key} ${value}
+                            </dd>
+                    ))}
+                    </dl>
+                ))
+                }
+            </div>
+        </div>
     );
 }
-//                 <Card.Text>{props.paymentsMap.get(props.people[idx]).size}</Card.Text>
+
+                // <Card.Text>{props.paymentsMap.get(props.people[idx]).size}</Card.Text>
 
                 // <Card.Text>
                 //     {props.paymentsMap.get(props.people[idx]).forEach((value, key) => {
                 //         <li> {key} : you owe $ {value} </li>
                 //     })}
                 // </Card.Text>
+
+                // {props.people.forEach((person) => {
+                //     <dl>
+                //         <dt> {person} </dt>
+                //          {props.paymentsMap.get(person).forEach((value, key) => {
+                //             <dd> {key} : you owe $ {value} </dd>
+                //             console.log(key + " : you owe $" + value)
+                //             console.log(value)
+                //         })}
+                //     </dl>
+                // })}

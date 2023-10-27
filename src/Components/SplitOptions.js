@@ -8,21 +8,21 @@ import { H3, Dialog, Classes, Overlay, FormGroup, InputGroup,
 
 export default function SplitOptions(props) {
 
-    const [equalSplit, setEqualSplit] = useState(0)   // boolean for the expense being split equally (0) or not (1)
+    // const [equalSplit, setEqualSplit] = useState(0)   // boolean for the expense being split equally (0) or not (1)
     
-    const handleSplit = (selectedValue) => {
-        console.log("equalSplit before: ", equalSplit)
-        setEqualSplit(selectedValue.target.value)
-        console.log("equalSplit after: ", equalSplit)
+    // const handleSplit = (selectedValue) => {
+    //     console.log("equalSplit before: ", equalSplit)
+    //     setEqualSplit(selectedValue.target.value)
+    //     console.log("equalSplit after: ", equalSplit)
 
-        // Handle math for equal payment
-        let cost = props.expense.amount / props.people.length
-        props.people.forEach((elem, index) => {
-            props.payerChange.push({name: props.people, cost: [cost]})
-        })
+    //     // Handle math for equal payment
+    //     let cost = props.expense.amount / props.people.length
+    //     props.people.forEach((elem, index) => {
+    //         props.payerChange.push({name: props.people, cost: [cost]})
+    //     })
 
-        // Handle math for unequal payment
-    }; 
+    //     // Handle math for unequal payment
+    // }; 
 
     const [showPayers, setShowPayers] = useState(false)
     const [personPaidChild, setPersonPaidChild] = useState(props.people[0])

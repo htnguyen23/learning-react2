@@ -33,15 +33,15 @@ function App() {
   const updatePaymentsMap = () => {
     // TODO: find a way to populate map that isn't O(N^2)
     for (const currPer of people) {
-      console.log("\tcurrPer: " + currPer)
+      //console.log("\tcurrPer: " + currPer)
       for (const iterPer of people) {
-        console.log("\t\iterPer: " + iterPer)
+        //console.log("\t\iterPer: " + iterPer)
         if (!paymentsMap.get(currPer).has(iterPer)) {
           if (currPer == iterPer) {
             continue;
           }
           paymentsMap.get(currPer).set(iterPer, []);
-          console.log("here")
+          //console.log("here")
         }
       }
     }
@@ -54,13 +54,8 @@ function App() {
   return (
     <div className="App">
         <PaymentGrid people={people} paymentsMap={paymentsMap}></PaymentGrid>
-        <ul className="list-group">
-          {people.map((elem, i) => (
-          <li key={i} className="list-group-item list-group-item-action"> {elem} </li> ))}
-        </ul>
-
         <AppGroup onAddPerson={onAddPerson} ></AppGroup>
-        <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} peopleArr={peopleArr}></AppExpenses>
+        <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} paymentsMap={paymentsMap}></AppExpenses>
         <ul className="list-group">
           {expenses.map((item, i) => (
             <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
@@ -72,3 +67,8 @@ function App() {
 }
 
 export default App;
+
+//<ul className="list-group">
+//{people.map((elem, i) => (
+//<li key={i} className="list-group-item list-group-item-action"> {elem} </li> ))}
+//</ul>
