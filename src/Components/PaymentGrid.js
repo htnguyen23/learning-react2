@@ -6,17 +6,10 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function PaymentGrid( {people, paymentsMap} ) {
 
-     //console.log("in PaymentGrid()")
+     console.log("in PaymentGrid()")
+     //console.log("people")
+     //console.log(people)
      //console.log(props.paymentsMap)
-     //console.log(props.people)
-
-    // console.log("Card.Text:")
-    // for (let i = 0; i < props.people.length; i += 1) {
-    //     props.paymentsMap.get(props.people[i]).forEach((value, key) => {
-    //         console.log(key)
-    //         console.log(value)
-    //     })
-    // }
 
     const sumArray = (arr) => {
         return arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0)

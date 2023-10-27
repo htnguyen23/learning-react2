@@ -12,13 +12,6 @@ import Button from 'react-bootstrap/Button';
 import { H3, Dialog, Classes, Overlay, FormGroup, InputGroup, RadioGroup, Radio} from '@blueprintjs/core';
 
 let expensesArr = []   // CHANGE: use an array or a state hook?
-//const paymentsMap = new Map();
-/**
- * payerChangeMap map
- * { name: [ cost map w/ every other person's name as keys and values of what this person owes them ]
- *   name2 : [...]
- * }
- */
 
 /**
  * expense object

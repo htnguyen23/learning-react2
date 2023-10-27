@@ -9,6 +9,12 @@ import { Dialog, Classes } from '@blueprintjs/core';
   // data structure for all people in group to split expenses with - can a data structure be put into the function App() to behave like a global var for the components?
   let peopleArr = []
   const paymentsMap = new Map();
+  /**
+   * payerChangeMap map
+   * { name: [ cost map w/ every other person's name as keys and values of what this person owes them ]
+   *   name2 : [...]
+   * }
+   */
 
   // TODO: use <Tabs> for page nagivation
 
@@ -27,10 +33,15 @@ function App() {
     if (!paymentsMap.has(toAdd)) {
       paymentsMap.set(toAdd, new Map());
     }
-    updatePaymentsMap()
+    //console.log("people")
+    //console.log(people)
   }
 
-  const updatePaymentsMap = () => {
+  // populate updatePaymentsMap based on people in people
+  useEffect(() => {
+    console.log("in updatePaymentsMap:")
+    console.log("people")
+    console.log(people)
     // TODO: find a way to populate map that isn't O(N^2)
     for (const currPer of people) {
       //console.log("\tcurrPer: " + currPer)
@@ -41,10 +52,32 @@ function App() {
             continue;
           }
           paymentsMap.get(currPer).set(iterPer, []);
-          //console.log("here")
         }
       }
     }
+    console.log("paymentsMap")
+    console.log(paymentsMap)
+  }, [people]);
+
+  const updatePaymentsMap = () => {
+    console.log("in updatePaymentsMap:")
+    console.log("people")
+    console.log(people)
+    // TODO: find a way to populate map that isn't O(N^2)
+    for (const currPer of people) {
+      //console.log("\tcurrPer: " + currPer)
+      for (const iterPer of people) {
+        //console.log("\t\iterPer: " + iterPer)
+        if (!paymentsMap.get(currPer).has(iterPer)) {
+          if (currPer == iterPer) {
+            continue;
+          }
+          paymentsMap.get(currPer).set(iterPer, []);
+        }
+      }
+    }
+    console.log("paymentsMap")
+    console.log(paymentsMap)
   }
 
   const onAddExpense = (toAdd) => {
