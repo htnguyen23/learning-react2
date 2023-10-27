@@ -35,7 +35,7 @@ let expensesArr = []   // CHANGE: use an array or a state hook?
  *  }
  */
 
-export default function AppExpenses( props ) {
+export default function AppExpenses( {expenses, onAddExpense, people, paymentsMap} ) {
 
     const [showForm, setShowForm] = useState(false)
     const [expense, setExpense] = useState({ descrip: '', amount: ''})
@@ -44,7 +44,7 @@ export default function AppExpenses( props ) {
     //const [personPaid, setPersonPaid] = useState(props.people[0]); // problem
     
     // variable for person who is paying (used in calculating math for payments)
-    let personPaid = props.people[0]
+    let personPaid = people[0]
     const setPersonPaid = (person) => {
         personPaid = person
     }
@@ -58,7 +58,7 @@ export default function AppExpenses( props ) {
         console.log('form submitted: ', expense)
         if (expense.descrip.trim() && expense.amount) {
             setExpense({ descrip: expense.descrip.trim() })
-            props.onAddExpense(expense);   
+            onAddExpense(expense);   
         };
         setExpense({ descrip: '', amount: '' })
         if (equal) {
@@ -73,12 +73,12 @@ export default function AppExpenses( props ) {
         console.log("in paymentMathEqual: ")     
     
         // Handle math for equal payment
-        let eachCost = parseFloat((expense.amount / props.people.length).toFixed(2))
+        let eachCost = parseFloat((expense.amount / people.length).toFixed(2))
         
         console.log("paymentsMap before:")
-        console.log(props.paymentsMap)
+        console.log(paymentsMap)
 
-        for (const personPaying of props.paymentsMap.keys()) {
+        for (const personPaying of paymentsMap.keys()) {
             //paymentsMap.set("test", "test")
             if (personPaying == personPaid) {
                 console.log("personPaying = " + personPaying + " personPaid = " + personPaid)
@@ -86,16 +86,16 @@ export default function AppExpenses( props ) {
             } 
             console.log("personPaying = " + personPaying)
             // console.log(paymentsMap.get(personPaying).keys())
-            for (const personOwed of (props.paymentsMap.get(personPaying)).keys()) {
+            for (const personOwed of (paymentsMap.get(personPaying)).keys()) {
                 if (personOwed == personPaid) {
-                    props.paymentsMap.get(personPaying).get(personOwed).push(eachCost)
+                    paymentsMap.get(personPaying).get(personOwed).push(eachCost)
                     //console.log("\t\there")
                 }
                 //console.log("\titerated through: " + personPaying + " for " + personOwed)
             }
         }
         console.log("paymentsMap after:")
-        console.log(props.paymentsMap);
+        console.log(paymentsMap);
     }
 
     return (
@@ -133,8 +133,8 @@ export default function AppExpenses( props ) {
                                     </Form.Group>
                                 </div>
                             </Row>
-                            { (props.people.length > 0) && (expense.descrip && expense.amount) && (
-                                <SplitOptions setEqual={setEqual} expense={expense} people={props.people} setPersonPaid={setPersonPaid}/>
+                            { (people.length > 0) && (expense.descrip && expense.amount) && (
+                                <SplitOptions setEqual={setEqual} expense={expense} people={people} setPersonPaid={setPersonPaid}/>
                             )}
                             <div className={Classes.DIALOG_BODY}>
                                 <Button type="submit" onClick={handleSubmit} >Split it</Button>
