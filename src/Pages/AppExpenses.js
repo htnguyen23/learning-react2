@@ -59,36 +59,35 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
         }
         setShowForm(false)
     };
-
     
     // payerChange setter method to be passed to SplitOptions child component for it to return which payers paid what amount
     const paymentMathEqual = () => {
         console.log("in paymentMathEqual: ")     
-    
         // Handle math for equal payment
         let eachCost = parseFloat((expense.amount / people.length).toFixed(2))
-        
-        console.log("paymentsMap before:")
-        console.log(paymentsMap)
 
         for (const personPaying of paymentsMap.keys()) {
-            //paymentsMap.set("test", "test")
             if (personPaying == personPaid) {
-                console.log("personPaying = " + personPaying + " personPaid = " + personPaid)
                 continue;
             } 
-            console.log("personPaying = " + personPaying)
-            // console.log(paymentsMap.get(personPaying).keys())
             for (const personOwed of (paymentsMap.get(personPaying)).keys()) {
                 if (personOwed == personPaid) {
                     paymentsMap.get(personPaying).get(personOwed).push(eachCost)
-                    //console.log("\t\there")
                 }
-                //console.log("\titerated through: " + personPaying + " for " + personOwed)
             }
         }
-        console.log("paymentsMap after:")
-        console.log(paymentsMap);
+        // console.log("paymentsMap after:")
+        // console.log(paymentsMap);
+    }
+
+    const showFormClose = () => {
+        setShowForm(false);
+        setExpense({ descrip:"" })
+        setExpense({ amount:"" })
+    }
+
+    const paymentMathNotEqual = () => {
+        console.log("in paymentMathNotEqual")
     }
 
     return (
@@ -102,7 +101,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                 <Dialog 
                     title="Add an Expense"
                     isOpen={showForm} 
-                    onClose={() => setShowForm(false)} > 
+                    onClose={() => showFormClose()} > 
                         <Form>
                             <Row className="mb-3">
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

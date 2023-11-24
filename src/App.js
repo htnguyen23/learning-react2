@@ -40,7 +40,7 @@ function App() {
   // populate updatePaymentsMap based on people in people
   useEffect(() => {
     console.log("in updatePaymentsMap:")
-    console.log("people")
+    console.log("\tpeople")
     console.log(people)
     // TODO: find a way to populate map that isn't O(N^2)
     for (const currPer of people) {
@@ -55,7 +55,7 @@ function App() {
         }
       }
     }
-    console.log("paymentsMap")
+    console.log("\tpaymentsMap")
     console.log(paymentsMap)
   }, [people]);
 
@@ -85,23 +85,18 @@ function App() {
   }
 
   return (
-    <div className="App">
-        <PaymentGrid people={people} paymentsMap={paymentsMap}></PaymentGrid>
-        <AppGroup onAddPerson={onAddPerson} ></AppGroup>
-        <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} paymentsMap={paymentsMap}></AppExpenses>
-        <ul className="list-group">
-          {expenses.map((item, i) => (
-            <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
-          ))}
-        </ul>
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', minHeight: '100vh' }}>
+      <PaymentGrid people={people} paymentsMap={paymentsMap}></PaymentGrid>
+      <AppGroup onAddPerson={onAddPerson} ></AppGroup>
+      <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} paymentsMap={paymentsMap}></AppExpenses>
+      <ul className="list-group">
+        {expenses.map((item, i) => (
+          <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
+        ))}
+      </ul>
     </div>
   );
 
 }
 
 export default App;
-
-//<ul className="list-group">
-//{people.map((elem, i) => (
-//<li key={i} className="list-group-item list-group-item-action"> {elem} </li> ))}
-//</ul>

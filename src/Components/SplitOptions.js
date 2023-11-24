@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { H3, Dialog, Classes, Overlay, FormGroup, InputGroup, 
-        RadioGroup, Radio, Collapse, Button, Pre, Drawer} from '@blueprintjs/core';
+        RadioGroup, Radio, Collapse, Button, Pre, Drawer, CheckboxCard} from '@blueprintjs/core';
 
 export default function SplitOptions(props) {
 
@@ -27,8 +27,8 @@ export default function SplitOptions(props) {
     const [showPayers, setShowPayers] = useState(false)
     const [personPaidChild, setPersonPaidChild] = useState(props.people[0])
     const [showSplit, setShowSplit] = useState(false)
-    const [equality, setEquality] = useState("equally")
-    const [showUnequal, setShowUnequal] = useState(false)
+    const [equality, setEquality] = useState("equally")    
+    const [showUnequal, setShowUnequal] = useState(false)   // state doesn't update in time to open Drawer
 
     const showPayersButton = () => {
         setShowPayers(!showPayers)
@@ -46,12 +46,26 @@ export default function SplitOptions(props) {
     const unequalButton = () => {
         setEquality("not equally ") 
         props.setEqual(false)
+        setShowUnequal(true)
     }
     
     const equalButton = () => {
         setEquality("equally")
         props.setEqual(true)
+        setShowUnequal(false)
     }
+
+    const [showUnequalCollapse1, setShowUnequalCollapse1] = useState(false)
+    const unequalCollapse1Button = () => {
+        setShowUnequalCollapse1(true)
+        setShowUnequalCollapse2(false)
+    }
+    const [showUnequalCollapse2, setShowUnequalCollapse2] = useState(false)
+    const unequalCollapse2Button = () => {
+        setShowUnequalCollapse1(false)
+        setShowUnequalCollapse2(true)
+    }
+
 
     const splitEqually = () => {
         // Handle math for equal payment
@@ -78,19 +92,51 @@ export default function SplitOptions(props) {
                         ))}
                     </Collapse>
                 </Button>
-
                 <strong>  Split by everyone </strong>
                 <Button onClick={showSplitButton}>
                     {(!showSplit && equality)}
                     <Collapse isOpen={showSplit}>
                         <Button onClick={equalButton} > equally </Button>
                         <Button onClick={unequalButton} > not equally </Button>
-                        <Drawer isOpen={showUnequal} title="someone's paying more..." isCloseButtonShown={true} onClose={equalButton}> UNEQUAL OPTION </Drawer>
                     </Collapse>
                 </Button>
+
+                <Drawer 
+                    isOpen={showUnequal}
+                    title="someone's paying more..." 
+                    isCloseButtonShown={true} 
+                    canOutsideClickClose={false}
+                    onClose={equalButton}
+                    > 
+ 
+                    <Button 
+                        id="unequalCollapse1Button" 
+                        onClick={unequalCollapse1Button} > some pay some don't
+                    </Button>
+                    <Collapse 
+                        id="unequalCollapse1" 
+                        isOpen={showUnequalCollapse1}>
+                            <Pre>Dummy TEXT</Pre>
+                            {props.people.map((item, i) => (
+                                <CheckboxCard key={i} > {item} </CheckboxCard>
+                            ))}
+                    </Collapse>
+
+                    <Button 
+                        id="unequalCollapse2Button" 
+                        onClick={unequalCollapse2Button} > some pay specific amounts
+                    </Button>
+                    <Collapse 
+                        id="unequalCollapse2" 
+                        isOpen={showUnequalCollapse2}>
+                            <Pre>Dummy TEXT</Pre>
+                            
+                    </Collapse>
+                </Drawer>
                 
             </div>
         </div > 
     ); 
     }
 
+// TODO use control card for adding who's paying and who's not

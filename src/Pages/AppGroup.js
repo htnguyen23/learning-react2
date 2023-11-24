@@ -32,7 +32,7 @@ export default function AppGroup( {onAddPerson} ) {
                 <FormGroup
                     label="Add person"
                     labelFor="text-input" >
-                    <InputGroup 
+                    <InputGroup fill='false'
                         id="text-input" 
                         onKeyDown={(e) => handleKeyDown(e)}
                         placeholder="Who is paying?" 
