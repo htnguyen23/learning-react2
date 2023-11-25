@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { H3, Dialog, Classes, Overlay, FormGroup, InputGroup, 
-        RadioGroup, Radio, Collapse, Button, Pre, Drawer, CheckboxCard} from '@blueprintjs/core';
+        RadioGroup, Radio, Collapse, Button, Pre, Drawer, CheckboxCard, Checkbox} from '@blueprintjs/core';
 
 export default function SplitOptions(props) {
 
@@ -55,18 +55,6 @@ export default function SplitOptions(props) {
         setShowUnequal(false)
     }
 
-    const [showUnequalCollapse1, setShowUnequalCollapse1] = useState(false)
-    const unequalCollapse1Button = () => {
-        setShowUnequalCollapse1(true)
-        setShowUnequalCollapse2(false)
-    }
-    const [showUnequalCollapse2, setShowUnequalCollapse2] = useState(false)
-    const unequalCollapse2Button = () => {
-        setShowUnequalCollapse1(false)
-        setShowUnequalCollapse2(true)
-    }
-
-
     const splitEqually = () => {
         // Handle math for equal payment
         let eachCost = props.expense.amount / props.people.length
@@ -79,6 +67,41 @@ export default function SplitOptions(props) {
         props.setPayerChangeChild(payerChangeChild)
     }
     //console.log("testing no function: " + equality)
+
+    // For unequal split drawer
+    const handleSubmit = () => {
+        setShowUnequal(false)
+    }
+
+    const [Uneq1showCollapse, setUneq1ShowCollapse] = useState(false)
+    const uneq1CollapseButton = () => {
+        setUneq1ShowCollapse(true)
+        setUneq2ShowCollapse(false)
+    }
+
+    let uneq1PayerArr = []
+    let uneq1PayerAmount = 0
+    //const [uneq1PayerAmount, setUneq1PayerAmount] = useState(0)   // HTML elem for reporting amount: <Pre>Each person is paying: ${(uneq1PayerAmount > props.expense.amount) ? 0 : uneq1PayerAmount} </Pre>
+    const uneq1CheckboxOnChange = (e) => {
+        //console.log(e)
+        if (e.target.checked){
+            uneq1PayerArr.push(e.target.value)
+        }
+        else {
+            // find way to remove unchecked that doesn't require iterating through array to find matching elem
+            uneq1PayerArr = uneq1PayerArr.filter(item => item !== e.target.value)
+        }
+        //setUneq1PayerAmount(props.expense.amount / uneq1PayerArr.length)
+        uneq1PayerAmount = props.expense.amount / uneq1PayerArr.length
+        console.log(uneq1PayerArr)
+        console.log("Each person is paying: $" + uneq1PayerAmount)
+    }
+    
+    const [Uneq2ShowCollapse, setUneq2ShowCollapse] = useState(false)
+    const uneq2CollapseButton = () => {
+        setUneq1ShowCollapse(false)
+        setUneq2ShowCollapse(true)
+    }
 
     return ( 
         <div > 
@@ -111,27 +134,35 @@ export default function SplitOptions(props) {
  
                     <Button 
                         id="unequalCollapse1Button" 
-                        onClick={unequalCollapse1Button} > some pay some don't
+                        onClick={uneq1CollapseButton} > some pay some don't
                     </Button>
                     <Collapse 
                         id="unequalCollapse1" 
-                        isOpen={showUnequalCollapse1}>
-                            <Pre>Dummy TEXT</Pre>
+                        isOpen={Uneq1showCollapse}>
                             {props.people.map((item, i) => (
-                                <CheckboxCard key={i} > {item} </CheckboxCard>
+                                <Checkbox 
+                                    label={item}
+                                    value={item}
+                                    onChange={(e) => uneq1CheckboxOnChange(e)}
+                                    >  </Checkbox>
                             ))}
                     </Collapse>
 
                     <Button 
                         id="unequalCollapse2Button" 
-                        onClick={unequalCollapse2Button} > some pay specific amounts
+                        onClick={uneq2CollapseButton} > some pay specific amounts
                     </Button>
                     <Collapse 
                         id="unequalCollapse2" 
-                        isOpen={showUnequalCollapse2}>
+                        isOpen={Uneq2ShowCollapse}>
                             <Pre>Dummy TEXT</Pre>
-                            
                     </Collapse>
+                    
+                    {(Uneq1showCollapse || Uneq2ShowCollapse) && (<div className={Classes.DIALOG_BODY}>
+                        <Button type="submit" onClick={handleSubmit} >Split it</Button>
+                    </div>
+                    )}
+
                 </Drawer>
                 
             </div>

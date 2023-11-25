@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function PaymentGrid( {people, paymentsMap} ) {
 
-     console.log("in PaymentGrid()")
+     //console.log("in PaymentGrid()")
      //console.log("people")
      //console.log(people)
      //console.log(props.paymentsMap)

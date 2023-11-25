@@ -39,9 +39,9 @@ function App() {
 
   // populate updatePaymentsMap based on people in people
   useEffect(() => {
-    console.log("in updatePaymentsMap:")
-    console.log("\tpeople")
-    console.log(people)
+    // console.log("in updatePaymentsMap:")
+    // console.log("\tpeople")
+    // console.log(people)
     // TODO: find a way to populate map that isn't O(N^2)
     for (const currPer of people) {
       //console.log("\tcurrPer: " + currPer)
@@ -59,26 +59,26 @@ function App() {
     console.log(paymentsMap)
   }, [people]);
 
-  const updatePaymentsMap = () => {
-    console.log("in updatePaymentsMap:")
-    console.log("people")
-    console.log(people)
-    // TODO: find a way to populate map that isn't O(N^2)
-    for (const currPer of people) {
-      //console.log("\tcurrPer: " + currPer)
-      for (const iterPer of people) {
-        //console.log("\t\iterPer: " + iterPer)
-        if (!paymentsMap.get(currPer).has(iterPer)) {
-          if (currPer == iterPer) {
-            continue;
-          }
-          paymentsMap.get(currPer).set(iterPer, []);
-        }
-      }
-    }
-    console.log("paymentsMap")
-    console.log(paymentsMap)
-  }
+  // const updatePaymentsMap = () => {
+  //   console.log("in updatePaymentsMap:")
+  //   console.log("people")
+  //   console.log(people)
+  //   // TODO: find a way to populate map that isn't O(N^2)
+  //   for (const currPer of people) {
+  //     //console.log("\tcurrPer: " + currPer)
+  //     for (const iterPer of people) {
+  //       //console.log("\t\iterPer: " + iterPer)
+  //       if (!paymentsMap.get(currPer).has(iterPer)) {
+  //         if (currPer == iterPer) {
+  //           continue;
+  //         }
+  //         paymentsMap.get(currPer).set(iterPer, []);
+  //       }
+  //     }
+  //   }
+  //   console.log("paymentsMap")
+  //   console.log(paymentsMap)
+  // }
 
   const onAddExpense = (toAdd) => {
     setExpenses([...expenses, {descrip: toAdd.descrip, amount: toAdd.amount}])
