@@ -11,7 +11,7 @@ import { Dialog, Classes } from '@blueprintjs/core';
   const paymentsMap = new Map();
   /**
    * payerChangeMap map
-   * { name: [ cost map w/ every other person's name as keys and values of what this person owes them ]
+   * { name: [ cost map w/ every other person's name as keys and values (in an array) of what this person owes them ]
    *   name2 : [...]
    * }
    */
@@ -19,8 +19,6 @@ import { Dialog, Classes } from '@blueprintjs/core';
   // TODO: use <Tabs> for page nagivation
 
 function App() {
-  //console.log("here");
-  const [, setRenderTrigger] = useState({})  //State for triggering re-renders - can useEffect() be used here w/ a dependency array?
   const [people, setPeople] = useState([])   // {name: personName, cost: [array of amounts they owe $]}
   const [expenses, setExpenses] = useState([])
 
@@ -33,15 +31,10 @@ function App() {
     if (!paymentsMap.has(toAdd)) {
       paymentsMap.set(toAdd, new Map());
     }
-    //console.log("people")
-    //console.log(people)
   }
 
   // populate updatePaymentsMap based on people in people
   useEffect(() => {
-    // console.log("in updatePaymentsMap:")
-    // console.log("\tpeople")
-    // console.log(people)
     // TODO: find a way to populate map that isn't O(N^2)
     for (const currPer of people) {
       //console.log("\tcurrPer: " + currPer)
@@ -58,27 +51,6 @@ function App() {
     console.log("\tpaymentsMap")
     console.log(paymentsMap)
   }, [people]);
-
-  // const updatePaymentsMap = () => {
-  //   console.log("in updatePaymentsMap:")
-  //   console.log("people")
-  //   console.log(people)
-  //   // TODO: find a way to populate map that isn't O(N^2)
-  //   for (const currPer of people) {
-  //     //console.log("\tcurrPer: " + currPer)
-  //     for (const iterPer of people) {
-  //       //console.log("\t\iterPer: " + iterPer)
-  //       if (!paymentsMap.get(currPer).has(iterPer)) {
-  //         if (currPer == iterPer) {
-  //           continue;
-  //         }
-  //         paymentsMap.get(currPer).set(iterPer, []);
-  //       }
-  //     }
-  //   }
-  //   console.log("paymentsMap")
-  //   console.log(paymentsMap)
-  // }
 
   const onAddExpense = (toAdd) => {
     setExpenses([...expenses, {descrip: toAdd.descrip, amount: toAdd.amount}])

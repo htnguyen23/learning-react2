@@ -55,25 +55,26 @@ export default function SplitOptions(props) {
         setShowUnequal(false)
     }
 
-    const splitEqually = () => {
-        // Handle math for equal payment
-        let eachCost = props.expense.amount / props.people.length
-        let payerChangeChild = []
-        props.people.forEach((elem, index) => {
-            payerChangeChild.push({name: elem, cost: eachCost})
-            // console.log("in payerChangeChild: " + payerChangeChild[index])
-        })
-        //console.log("in equalButton in SplitOptions.js")
-        props.setPayerChangeChild(payerChangeChild)
-    }
-    //console.log("testing no function: " + equality)
-
     // For unequal split drawer
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setShowUnequal(false)
+        if (Uneq1ShowCollapse) {
+            try {
+                const result = await addToPayerChangeArrChild();
+                console.log(result)
+                const result2 = await props.payerChangeArrToMap();
+                console.log(result2)
+            } catch (error) {
+                console.error('Error', error);
+            }
+        }
+        else if (Uneq2ShowCollapse) {
+            console.log("Uneq2ShowCollapse")
+        }
+        props.showFormClose()
     }
 
-    const [Uneq1showCollapse, setUneq1ShowCollapse] = useState(false)
+    const [Uneq1ShowCollapse, setUneq1ShowCollapse] = useState(false)
     const uneq1CollapseButton = () => {
         setUneq1ShowCollapse(true)
         setUneq2ShowCollapse(false)
@@ -92,9 +93,19 @@ export default function SplitOptions(props) {
             uneq1PayerArr = uneq1PayerArr.filter(item => item !== e.target.value)
         }
         //setUneq1PayerAmount(props.expense.amount / uneq1PayerArr.length)
-        uneq1PayerAmount = props.expense.amount / uneq1PayerArr.length
+        uneq1PayerAmount = parseFloat((props.expense.amount / uneq1PayerArr.length).toFixed(2)) 
         console.log(uneq1PayerArr)
         console.log("Each person is paying: $" + uneq1PayerAmount)
+    }
+
+    // async function for updating PayerChangesArr in parent
+    const addToPayerChangeArrChild = async () => {
+        return new Promise((resolve) => {
+            uneq1PayerArr.forEach((payer) => {
+                props.addToPayerChangeArr(payer, uneq1PayerAmount)
+                }) 
+            resolve("addToPayerChangeArrChild test async")
+        })
     }
     
     const [Uneq2ShowCollapse, setUneq2ShowCollapse] = useState(false)
@@ -138,7 +149,7 @@ export default function SplitOptions(props) {
                     </Button>
                     <Collapse 
                         id="unequalCollapse1" 
-                        isOpen={Uneq1showCollapse}>
+                        isOpen={Uneq1ShowCollapse}>
                             {props.people.map((item, i) => (
                                 <Checkbox 
                                     label={item}
@@ -158,7 +169,7 @@ export default function SplitOptions(props) {
                             <Pre>Dummy TEXT</Pre>
                     </Collapse>
                     
-                    {(Uneq1showCollapse || Uneq2ShowCollapse) && (<div className={Classes.DIALOG_BODY}>
+                    {(Uneq1ShowCollapse || Uneq2ShowCollapse) && (<div className={Classes.DIALOG_BODY}>
                         <Button type="submit" onClick={handleSubmit} >Split it</Button>
                     </div>
                     )}

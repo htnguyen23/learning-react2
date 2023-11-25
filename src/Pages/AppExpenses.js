@@ -33,9 +33,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     const [showForm, setShowForm] = useState(false)
     const [expense, setExpense] = useState({ descrip: '', amount: ''})
     const [equal, setEqual] = useState(true)
-    let [payerChange, setPayerChange] = useState({giving: "", recieving: "", cost: 0})  
-    //const [personPaid, setPersonPaid] = useState(props.people[0]); // problem
-    
+        
     // variable for person who is paying (used in calculating math for payments)
     let personPaid = people[0]
     const setPersonPaid = (person) => {
@@ -57,13 +55,12 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
         if (equal) {
             paymentMathEqual()
         }
-        setShowForm(false)
+        showFormClose()
     };
     
-    // payerChange setter method to be passed to SplitOptions child component for it to return which payers paid what amount
+    // Handle math for equal payment
     const paymentMathEqual = () => {
         console.log("in paymentMathEqual: ")     
-        // Handle math for equal payment
         let eachCost = parseFloat((expense.amount / people.length).toFixed(2))
 
         for (const personPaying of paymentsMap.keys()) {
@@ -76,19 +73,34 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                 }
             }
         }
-        // console.log("paymentsMap after:")
-        // console.log(paymentsMap);
     }
 
     const showFormClose = () => {
         setShowForm(false);
         setExpense({ descrip:"" })
         setExpense({ amount:"" })
+        console.log("paymentsMap after form closed:")
+        console.log(paymentsMap);
     }
 
-    const paymentMathNotEqual = () => {
-        console.log("in paymentMathNotEqual")
+    // Handle math for unequal payment
+    let payerChangeArr = [] // objects in arr: {giving: "", recieving: "", cost: 0})  
+    // setter function for payerChangeArr to be spent to SplitOptions child componenet 
+    const addToPayerChangeArr = (givingFromChild, costFromChild) => {
+        payerChangeArr.push({giving: givingFromChild, recieving: personPaid, cost: costFromChild})
     }
+    // function iterates through payerChangeArr and updates PaymentsMap according to each element (is triggered in submission of expense in child SplitOptions)
+    const payerChangeArrToMap = async () => {
+        return new Promise((resolve) => {
+            payerChangeArr.forEach((payment) => {
+                paymentsMap.get(payment.giving).get(payment.recieving).push(payment.cost)
+                console.log(paymentsMap.get(payment.giving).get(payment.recieving)) 
+                //console.log(paymentsMap)
+            }) 
+            resolve("payerChangeArrToMap updated successfully")
+        })
+    }
+
 
     return (
         <div>
@@ -126,7 +138,14 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                                 </div>
                             </Row>
                             { (people.length > 0) && (expense.descrip && expense.amount) && (
-                                <SplitOptions setEqual={setEqual} expense={expense} people={people} setPersonPaid={setPersonPaid}/>
+                                <SplitOptions 
+                                    setEqual={setEqual} 
+                                    expense={expense} 
+                                    people={people} 
+                                    setPersonPaid={setPersonPaid}
+                                    addToPayerChangeArr={addToPayerChangeArr}
+                                    showFormClose={showFormClose}
+                                    payerChangeArrToMap={payerChangeArrToMap}/>
                             )}
                             <div className={Classes.DIALOG_BODY}>
                                 <Button type="submit" onClick={handleSubmit} >Split it</Button>
