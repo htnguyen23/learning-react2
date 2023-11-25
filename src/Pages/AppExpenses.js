@@ -79,6 +79,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
         setShowForm(false);
         setExpense({ descrip:"" })
         setExpense({ amount:"" })
+        setEqual(true)
         console.log("paymentsMap after form closed:")
         console.log(paymentsMap);
     }
@@ -145,7 +146,11 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                                     setPersonPaid={setPersonPaid}
                                     addToPayerChangeArr={addToPayerChangeArr}
                                     showFormClose={showFormClose}
-                                    payerChangeArrToMap={payerChangeArrToMap}/>
+                                    payerChangeArrToMap={payerChangeArrToMap}
+                                    handleSubmit={handleSubmit}
+                                    setExpense={setExpense}
+                                    onAddExpense={onAddExpense}
+                                    />
                             )}
                             <div className={Classes.DIALOG_BODY}>
                                 <Button type="submit" onClick={handleSubmit} >Split it</Button>

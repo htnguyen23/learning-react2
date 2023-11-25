@@ -71,7 +71,15 @@ export default function SplitOptions(props) {
         else if (Uneq2ShowCollapse) {
             console.log("Uneq2ShowCollapse")
         }
+        // TODO: repeated handleSubmit() code from AppExpenses.js (figure out to trigger func w/o e)
+        console.log('form submitted: ', props.expense)
+        if (props.expense.descrip.trim() && props.expense.amount) {
+            props.setExpense({ descrip: props.expense.descrip.trim() })
+            props.onAddExpense(props.expense);   
+        };
+        props.setExpense({ descrip: '', amount: '' })
         props.showFormClose()
+        
     }
 
     const [Uneq1ShowCollapse, setUneq1ShowCollapse] = useState(false)
