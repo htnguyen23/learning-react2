@@ -14,7 +14,7 @@ export default function AppGroup( {onAddPerson} ) {
         }
     }
     const onAddPersonChild = () => {
-        //console.log("in child onAddPerson")
+        //console.log("\tin child onAddPerson")
         if (!showForm) {
             setShowForm(true)
         } else {

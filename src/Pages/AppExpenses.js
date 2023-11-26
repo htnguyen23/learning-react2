@@ -33,12 +33,15 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     const [showForm, setShowForm] = useState(false)
     const [expense, setExpense] = useState({ descrip: '', amount: ''})
     const [equal, setEqual] = useState(true)
+    const [personPaid, setPersonPaid] = useState(people[0])
         
     // variable for person who is paying (used in calculating math for payments)
-    let personPaid = people[0]
-    const setPersonPaid = (person) => {
-        personPaid = person
-    }
+    // let personPaid = people[0]
+    // const setPersonPaid = (person) => {
+    //     personPaid = person
+    //     console.log("\tin setPersonPaid:")
+    //     console.log("PersonPaid = " + personPaid)
+    // }
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setExpense({...expense, [name]: value});
@@ -60,7 +63,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     
     // Handle math for equal payment
     const paymentMathEqual = () => {
-        console.log("in paymentMathEqual: ")     
+        console.log("\tin paymentMathEqual: ")     
         let eachCost = parseFloat((expense.amount / people.length).toFixed(2))
 
         for (const personPaying of paymentsMap.keys()) {
@@ -88,12 +91,16 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     let payerChangeArr = [] // objects in arr: {giving: "", recieving: "", cost: 0})  
     // setter function for payerChangeArr to be spent to SplitOptions child componenet 
     const addToPayerChangeArr = (givingFromChild, costFromChild) => {
+        console.log("\tin addToPayerChangeArr:")
+        console.log("PersonPaid = " + personPaid)
         payerChangeArr.push({giving: givingFromChild, recieving: personPaid, cost: costFromChild})
     }
     // function iterates through payerChangeArr and updates PaymentsMap according to each element (is triggered in submission of expense in child SplitOptions)
     const payerChangeArrToMap = async () => {
+        console.log("\tin payerChangeArrToMap (parent)")
         return new Promise((resolve) => {
             payerChangeArr.forEach((payment) => {
+                console.log(payment)
                 paymentsMap.get(payment.giving).get(payment.recieving).push(payment.cost)
                 console.log(paymentsMap.get(payment.giving).get(payment.recieving)) 
                 //console.log(paymentsMap)
@@ -143,6 +150,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                                     setEqual={setEqual} 
                                     expense={expense} 
                                     people={people} 
+                                    personPaid={personPaid}
                                     setPersonPaid={setPersonPaid}
                                     addToPayerChangeArr={addToPayerChangeArr}
                                     showFormClose={showFormClose}
