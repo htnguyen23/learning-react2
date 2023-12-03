@@ -4,7 +4,7 @@ import SplitOptions from '../Components/SplitOptions';
 import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup'
+import CardGroup from 'react-bootstrap/CardGroup';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -34,6 +34,8 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     const [expense, setExpense] = useState({ descrip: '', amount: ''})
     const [equal, setEqual] = useState(true)
     const [personPaid, setPersonPaid] = useState(people[0])
+    // console.log("people[0] = " + people[0])
+    // console.log("PersonPaid = " + personPaid)
         
     // variable for person who is paying (used in calculating math for payments)
     // let personPaid = people[0]
@@ -113,7 +115,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     return (
         <div>
             <button 
-                className="App-button" 
+                className="button-33" 
                 onClick={() => {setShowForm(true)}}> 
                 Add Expense 
             </button>
@@ -121,49 +123,54 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                 <Dialog 
                     title="Add an Expense"
                     isOpen={showForm} 
-                    onClose={() => showFormClose()} > 
-                        <Form>
-                            <Row className="mb-3">
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    <Form.Group as={Col} controlId="descrip">
-                                        <label> Description: </label>
-                                        <input
-                                            id="descrip"
-                                            type="text"
-                                            name="descrip"
-                                            value={expense.descrip}
-                                            onChange={handleInputChange} />
-                                    </Form.Group>
-                                    <Form.Group as={Col} controlId="amount">
-                                        <label>Amount: $</label>
-                                        <input
-                                            id="amount"
-                                            type="number"
-                                            name="amount"
-                                            value={expense.amount}
-                                            onChange={handleInputChange} />
-                                    </Form.Group>
-                                </div>
-                            </Row>
-                            { (people.length > 0) && (expense.descrip && expense.amount) && (
-                                <SplitOptions 
-                                    setEqual={setEqual} 
-                                    expense={expense} 
-                                    people={people} 
-                                    personPaid={personPaid}
-                                    setPersonPaid={setPersonPaid}
-                                    addToPayerChangeArr={addToPayerChangeArr}
-                                    showFormClose={showFormClose}
-                                    payerChangeArrToMap={payerChangeArrToMap}
-                                    handleSubmit={handleSubmit}
-                                    setExpense={setExpense}
-                                    onAddExpense={onAddExpense}
-                                    />
-                            )}
-                            <div className={Classes.DIALOG_BODY}>
-                                <Button type="submit" onClick={handleSubmit} >Split it</Button>
-                            </div>     
-                        </Form>
+                    onClose={() => showFormClose()} 
+                    style={{ borderRadius: '10px'}}> 
+                    <Form>
+                        <input 
+                            type="text" 
+                            name="descrip" 
+                            className="question" 
+                            id="descrip2" 
+                            required autocomplete="off" 
+                            value={expense.descrip}
+                            onChange={handleInputChange}/>
+                        <label for="descrip2">
+                            <span>Give the expense a name</span></label>
+                        <input 
+                            type="text" 
+                            name="amount"
+                            className="question" 
+                            id="amount2" 
+                            required autocomplete="off" 
+                            value={expense.amount}
+                            onChange={handleInputChange}
+                            />
+                        <label for="amount2">
+                        <span>How much was it?</span></label>
+                        { (people.length > 0) && (expense.descrip && expense.amount) && (
+                            <SplitOptions 
+                                setEqual={setEqual} 
+                                expense={expense} 
+                                people={people} 
+                                personPaid={personPaid}
+                                setPersonPaid={setPersonPaid}
+                                addToPayerChangeArr={addToPayerChangeArr}
+                                showFormClose={showFormClose}
+                                payerChangeArrToMap={payerChangeArrToMap}
+                                handleSubmit={handleSubmit}
+                                setExpense={setExpense}
+                                onAddExpense={onAddExpense}
+                                />
+                        )}
+                        <div
+                            style={{display:"flex", justifyContent: 'center', padding: '10px'}}>
+                            <button 
+                                type="submit" 
+                                className="button-33"
+                                onClick={handleSubmit} 
+                                >Split it</button>
+                        </div>     
+                    </Form>
                 </Dialog> 
             </div>
         </div>

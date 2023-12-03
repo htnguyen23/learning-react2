@@ -26,13 +26,14 @@ export default function AppGroup( {onAddPerson} ) {
 
     return (
         <div>
-            <div style={{ display: 'block', width: 400, padding: 30 }} > </div>
-            <button className="App-button" type="button" onClick={onAddPersonChild}> Add Person </button>
+            <div className="App-div" > </div>
+            <button className="button-33" type="button" onClick={onAddPersonChild}> Add Person </button>
             {showForm && (
                 <FormGroup
                     label="Add person"
                     labelFor="text-input" >
-                    <InputGroup fill='false'
+                    <InputGroup 
+                        fill='false'
                         id="text-input" 
                         onKeyDown={(e) => handleKeyDown(e)}
                         placeholder="Who is paying?" 

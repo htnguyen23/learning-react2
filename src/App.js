@@ -1,4 +1,5 @@
 import './App.css';
+import './Input.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppExpenses from './Pages/AppExpenses';
 import AppGroup from './Pages/AppGroup';
@@ -57,15 +58,19 @@ function App() {
   }
 
   return (
-    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', minHeight: '100vh' }}>
-      <PaymentGrid people={people} paymentsMap={paymentsMap}></PaymentGrid>
-      <AppGroup onAddPerson={onAddPerson} ></AppGroup>
-      <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} paymentsMap={paymentsMap}></AppExpenses>
-      <ul className="list-group">
-        {expenses.map((item, i) => (
-          <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
-        ))}
-      </ul>
+    <div>
+      <div className="App-header" > SPLIT IT </div>
+      <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', minHeight: '100vh' }}>
+        <PaymentGrid people={people} paymentsMap={paymentsMap}></PaymentGrid>
+        <AppGroup onAddPerson={onAddPerson} ></AppGroup>
+        <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} paymentsMap={paymentsMap}></AppExpenses>
+        <ul className="list-group">
+          {expenses.map((item, i) => (
+            <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
+          ))}
+        </ul>
+      </div>
+      <div className="App-footer" > </div>
     </div>
   );
 
