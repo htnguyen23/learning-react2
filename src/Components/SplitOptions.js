@@ -121,7 +121,6 @@ export default function SplitOptions(props) {
         //console.log(e.target)
         if (e.target.value != '')
             uneq2PayerMap.set(e.target.id, parseFloat(e.target.value))
-            //setUneq1PayerAmount(props.expense.amount / uneq1PayerArr.length)
             let uneq2PayerSum = 0
             for (const val of uneq2PayerMap.values()) {
                 uneq2PayerSum += val;
@@ -145,20 +144,20 @@ export default function SplitOptions(props) {
         <div > 
             <div>
                 <strong>  Paid by  </strong>
-                <Button onClick={showPayersButton}>
+                <Button style={{fontSize: "10px"}} onClick={showPayersButton}>
                     {(!showPayers && personPaidChild)}
                     <Collapse isOpen={showPayers}>
                         {props.people.map((item, i) => (
-                            <Button key={i} onClick={(eName) => payerClicked(item)} > {item} </Button>
+                            <Button key={i} className="SplitOptions-button" onClick={(eName) => payerClicked(item)} > {item} </Button>
                         ))}
                     </Collapse>
                 </Button>
                 <strong>  Split by everyone </strong>
-                <Button onClick={showSplitButton}>
+                <Button className="SplitOptions-button" onClick={showSplitButton} >
                     {(!showSplit && equality)}
                     <Collapse isOpen={showSplit}>
-                        <Button onClick={equalButton} > equally </Button>
-                        <Button onClick={unequalButton} > not equally </Button>
+                        <Button onClick={equalButton} className="SplitOptions-button" > equally </Button>
+                        <Button onClick={unequalButton} className="SplitOptions-button"> not equally </Button>
                     </Collapse>
                 </Button>
 
@@ -172,7 +171,8 @@ export default function SplitOptions(props) {
  
                     <Button 
                         id="unequalCollapse1Button" 
-                        onClick={uneq1CollapseButton} > some pay some don't
+                        onClick={uneq1CollapseButton} 
+                        > some pay some don't
                     </Button>
                     <Collapse 
                         id="unequalCollapse1" 
@@ -188,7 +188,8 @@ export default function SplitOptions(props) {
 
                     <Button 
                         id="unequalCollapse2Button" 
-                        onClick={uneq2CollapseButton} > some pay specific amounts
+                        onClick={uneq2CollapseButton} 
+                        > some pay specific amounts
                     </Button>
                     <Collapse 
                         id="unequalCollapse2" 

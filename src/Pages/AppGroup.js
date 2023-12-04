@@ -31,7 +31,8 @@ export default function AppGroup( {onAddPerson} ) {
             {showForm && (
                 <FormGroup
                     label="Add person"
-                    labelFor="text-input" >
+                    labelFor="text-input"
+                    style={{display: "flex", flexDirection: "column", alignItems: "center"}} >
                     <InputGroup 
                         fill='false'
                         id="text-input" 
@@ -39,6 +40,7 @@ export default function AppGroup( {onAddPerson} ) {
                         placeholder="Who is paying?" 
                         value={person} 
                         onChange={(e) => setPerson(e.target.value)}
+                        style={{width: "300px"}}
                     />
                 </FormGroup> 
             )}

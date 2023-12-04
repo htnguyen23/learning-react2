@@ -87,6 +87,12 @@
   align-items: 'center';
 }
 
-.Main-button {
+.App-expenses {
+  padding: 30px
+}
 
+.SplitOptions-button {
+  font-size: 20px;
+  background-color: #dfe8e2;
+  color: red;
 }

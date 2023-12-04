@@ -34,6 +34,47 @@ function App() {
     }
   }
 
+  /**
+   <div className="App-header" > SPLIT IT </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'auto auto', columnGap: '10px' }} >
+        <span>
+          <PaymentGrid 
+            people={people} 
+            paymentsMap={paymentsMap}>
+            </PaymentGrid>
+        </span>
+        <span>
+          <AppGroup 
+            onAddPerson={onAddPerson} >
+            </AppGroup>
+        </span>
+        <span>
+          <AppExpenses 
+            onAddExpense={onAddExpense} 
+            people={people} 
+            expenses={expenses} 
+            paymentsMap={paymentsMap}
+            className="App-expenses">
+            </AppExpenses>  
+        </span>
+        <span>
+          <ul className="list-group">
+            {expenses.map((item, i) => (
+              <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
+            ))}
+          </ul>
+        </span>
+      </div>
+
+      <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', minHeight: '100vh' }}>
+        <PaymentGrid 
+          people={people} 
+          paymentsMap={paymentsMap}>
+          </PaymentGrid>
+      </div>
+
+   */
   // populate updatePaymentsMap based on people in people
   useEffect(() => {
     // TODO: find a way to populate map that isn't O(N^2)
@@ -59,17 +100,33 @@ function App() {
 
   return (
     <div>
+      
       <div className="App-header" > SPLIT IT </div>
+
       <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', minHeight: '100vh' }}>
-        <PaymentGrid people={people} paymentsMap={paymentsMap}></PaymentGrid>
-        <AppGroup onAddPerson={onAddPerson} ></AppGroup>
-        <AppExpenses onAddExpense={onAddExpense} people={people} expenses={expenses} paymentsMap={paymentsMap}></AppExpenses>
-        <ul className="list-group">
+        <PaymentGrid 
+          people={people} 
+          paymentsMap={paymentsMap}>
+          </PaymentGrid>
+        <AppGroup 
+          onAddPerson={onAddPerson} >
+          </AppGroup>
+        <AppExpenses 
+          onAddExpense={onAddExpense} 
+          people={people} 
+          expenses={expenses} 
+          paymentsMap={paymentsMap}
+          className="App-expenses">
+          </AppExpenses> 
+        <ul 
+          className="list-group"
+          style={{padding: "50px"}}>
           {expenses.map((item, i) => (
             <li key={i} className="list-group-item list-group-item-action" > {item.descrip} : ${item.amount} </li>
           ))}
         </ul>
       </div>
+      
       <div className="App-footer" > </div>
     </div>
   );

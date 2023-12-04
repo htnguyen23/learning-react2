@@ -84,7 +84,7 @@ html {
   input.question:valid + label > span {
     top: -75px; /*space b/t question and answer*/
     font-size: 20px; /*size of question when there's an answer*/
-    color: #95ad9d;
+    color: #95ad9d; 
   }
   
   textarea.question:focus + label > span,
@@ -109,7 +109,7 @@ html {
     font-weight: 300;
     margin: 0;
     position: absolute;
-    color: black; /*8F8F8F*/
+    color: #95ad9d; /*8F8F8F*/
     font-size: 25px; /*size of question*/
     top: -50px; /*pos of label from top*/
     left: 0px;

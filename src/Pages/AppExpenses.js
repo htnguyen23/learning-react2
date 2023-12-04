@@ -34,16 +34,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
     const [expense, setExpense] = useState({ descrip: '', amount: ''})
     const [equal, setEqual] = useState(true)
     const [personPaid, setPersonPaid] = useState(people[0])
-    // console.log("people[0] = " + people[0])
-    // console.log("PersonPaid = " + personPaid)
-        
-    // variable for person who is paying (used in calculating math for payments)
-    // let personPaid = people[0]
-    // const setPersonPaid = (person) => {
-    //     personPaid = person
-    //     console.log("\tin setPersonPaid:")
-    //     console.log("PersonPaid = " + personPaid)
-    // }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setExpense({...expense, [name]: value});
@@ -124,8 +115,9 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                     title="Add an Expense"
                     isOpen={showForm} 
                     onClose={() => showFormClose()} 
-                    style={{ borderRadius: '10px'}}> 
-                    <Form>
+                    style={{ borderRadius: '10px', marginLeft: "20px"}}> 
+                    <Form
+                        style={{marginLeft: "20px", marginTop: '10px'}}>
                         <input 
                             type="text" 
                             name="descrip" 
@@ -163,7 +155,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                                 />
                         )}
                         <div
-                            style={{display:"flex", justifyContent: 'center', padding: '10px'}}>
+                            style={{display:"flex", justifyContent: 'center', padding: '15px'}}>
                             <button 
                                 type="submit" 
                                 className="button-33"
