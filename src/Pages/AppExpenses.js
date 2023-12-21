@@ -66,6 +66,7 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
         console.log("\tin paymentMathEqual: ")     
         let eachCost = parseFloat((expense.amount / people.length).toFixed(2))
 
+        console.log("personPaid = " + personPaid)
         for (const personPaying of paymentsMap.keys()) {
             if (personPaying == personPaid) {
                 continue;
@@ -78,6 +79,13 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
         }
     }
 
+    const addExpenseButtonOnClick = () => {
+        if (personPaid == undefined) {
+            setShowForm(false)
+        } else {
+            setShowForm(true)
+        }
+    }
     const showFormClose = () => {
         setShowForm(false);
         setExpense({ descrip:"" })
@@ -118,10 +126,13 @@ export default function AppExpenses( {expenses, onAddExpense, people, paymentsMa
                 Add Expense 
             </button>
             <div>
-                <Dialog 
+                {(!personPaid) && (<Dialog
+                    title="A little problem"> you need to add a person before you can add an expense 
+                    </Dialog>)}
+                <Dialog>
                     title="Add an Expense"
                     isOpen={showForm} 
-                    onClose={() => showFormClose()} > 
+                    onClose={() => showFormClose()} 
                         <Form>
                             <Row className="mb-3">
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
